@@ -1,0 +1,45 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div class="is-flex is-justify-content-space-between m-4">
+  <p class="title">Cuenta núm: {{ cuenta.num }}</p>
+  <p class="buttons">
+    <button type="submit" class="button is-small is-success" form="formulario" title="Guarda cambios">
+      <span class="icon iconify" data-icon="mdi-content-save-edit"></span>
+    </button>
+
+    <a href="javascript:history.back()" class="button is-small is-danger" title="Cancela cambios">
+      <span class="icon iconify" data-icon="mdi-close"></span>
+    </a>
+  </p>
+
+</div>
+
+<form id="formulario" action="{% url 'main:modificar_cuenta' cuenta.num %}" method="post">
+{% csrf_token %}
+
+<div class="table-container">
+  <table class="table is-striped is-narrow is-hoverable is-small">
+    <thead>
+      <tr>
+        <th> Núm </th>
+        <th> Cuenta </th>
+        <th> Etiqueta </th>
+      </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+          <td> <input class="input is-small" type="number" id="num" name="num" size=5 readonly value={{ cuenta.num }} title="Número de la cuenta"></td>
+          <td> <input class="input is-small" type="text" id="nombre" name="nombre" required value="{{ cuenta.nombre }}" title="Nombre de la cuenta"></td>
+          <td> <input class="input is-small" type="text" id="etiqueta" name="etiqueta" value="{{ cuenta.etiqueta.all|join:', '}}" title="Entra las etiquetas separadas por comas"></td>
+          <td><a href="{% url 'main:borrar_cuenta' cuenta.num %}"><span class="icon iconify has-text-danger is-small" data-icon="mdi-trash-can"></span></a></td>
+        </tr>
+    </tbody>
+
+  </table>
+</div>
+</form>
+
+{% endblock %}

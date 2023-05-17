@@ -1,0 +1,26 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'tarjeta/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th scope="col">Nro</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Número</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Emisor</th>
+        <th scope="col">Mes</th>
+        <th scope="col">Año</th>
+        <th scope="col">Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

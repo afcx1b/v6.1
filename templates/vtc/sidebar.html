@@ -1,0 +1,234 @@
+{% load static %}
+<aside class="main-sidebar sidebar-light-primary elevation-1">
+    <a href="{% url 'dashboard' %}" class="brand-link">
+        <img src="{% static 'img/circulo.png' %}"
+             alt="AdminLTE Logo"
+             class="brand-image img-circle"
+             style="opacity: .8">
+        <span class="brand-text font-weight-bold">MOBECAM SAS</span>
+    </a>
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{{ request.user.get_image }}" class="img-circle" alt="User Image">
+            </div>
+            <div class="info">
+                <a class="d-block">{{ request.user.get_short_name }}</a>
+            </div>
+        </div>
+        {% if request.user.groups.all %}
+
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-solid fa-bars"></i>
+                            <p>
+                                Mantenimientos
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'company_update' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-building"></i>
+                                    <p>Compañia</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'category_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-truck-loading"></i>
+                                    <p>Categorías</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'product_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-boxes"></i>
+                                    <p>Productos</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-shopping-basket"></i>
+                            <p>
+                                Compras
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'supplier_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-parachute-box"></i>
+                                    <p>Proveedores</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'purchase_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>Compras</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fab fa-shopify"></i>
+                            <p>
+                                Ventas
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'client_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>Clientes</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'sale_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>Ventas</p>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-credit-card"></i>
+                            <p>
+                                Tarjetas
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'tarjeta_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-list"></i>
+                                    <p>Listado</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'tarjeta_create' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-save"></i>
+                                    <p>Crear</p>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-cash-register"></i>
+                            <p>
+                                Pagos
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'purchasePaid_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-shopping-basket"></i>
+                                    <p>Compras</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'salePaid_list' %}" class="nav-link active">
+                                    <i class="nav-icon fab fa-shopify"></i>
+                                    <p>Ventas</p>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-chart-bar"></i>
+                            <p>
+                                Reportes
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+
+                            <li class="nav-item">
+                                <a href="{% url 'purchase_report' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-shopping-basket"></i>
+                                    <p>Compras</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{% url 'sale_report' %}" class="nav-link active">
+                                    <i class="nav-icon fab fa-shopify"></i>
+                                    <p>Ventas</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-user-friends"></i>
+                            <p>
+                                Usuarios
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'user_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>Usuarios</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'access_users_list' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-user-clock"></i>
+                                    <p>Control de Accesos</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-calculator"></i>
+                            <p>
+                                Contabilidad
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'main:conta' %}" class="nav-link active">
+                                    <i class="nav-icon fas fa-user-secret"></i>
+                                    <p>Ingreso</p>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </nav>
+
+        {% endif %}
+    </div>
+</aside>

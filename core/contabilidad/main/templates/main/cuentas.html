@@ -1,0 +1,251 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block aside %}
+<div class="panel">
+  <p class="panel-heading">
+    Filtro
+  </p>
+
+  <div class="panel-block">
+    <form action="{% url 'main:filtro_cuentas' %}" method="post" id="filtro">
+      {% csrf_token %}
+      <ul>
+        <li><input class="input is-small" type="text" id="f_num" name="f_num" size=20 placeholder="Núm" value={{ filtro.num }}></li>
+        <li><input class="input is-small" type="text" id="f_nombre" name="f_nombre" size=20 placeholder="Nombre" value={{ filtro.nombre }}></li>
+        <li><input class="input is-small" type="text" id="f_etiqueta" name="f_etiqueta" list="etiquetas_list" size=20 placeholder="Etiqueta" value={{ filtro.etiqueta }}></li>
+        <li class="has-text-centered">
+          <button type="submit" class="button is-small is-success is-outlined m-2" title="Aplicar filtro" name="accion_filtro" value="aplicar">
+             <span class="icon iconify" data-icon="mdi-check"></span>
+          </button>
+          <button type="submit" class="button is-small is-danger is-outlined m-2" title="Borrar filtro" name="accion_filtro" value="borrar" id="button_clear">
+             <span class="icon iconify" data-icon="mdi-close-circle"></span>
+          </button>
+        </li>
+      </ul>
+    </form>
+  </div>
+
+</div>
+
+<div class="panel">
+  <p class="panel-heading">
+    Cargar cuentas
+  </p>
+
+  <div class="panel-block">
+    <form action="{% url 'main:cargar_cuentas' %}" method="post" enctype="multipart/form-data" id="cargar_fichero">
+      {% csrf_token %}
+
+      <label class="checkbox">
+        <input type="checkbox" name="sobreescribir" class="mr-2">
+        Sobreescribir cuentas
+      </label>
+      <div class="file mt-2 is-small is-centered">
+        <label class="file-label">
+          <input class="file-input" type="file" name="file" required>
+          <span class="file-cta">
+            <span class="file-icon">
+              <span class="icon iconify" data-icon="mdi-upload"></span>
+            </span>
+            <span class="file-label">
+              Abre fichero…
+            </span>
+          </span>
+        </label>
+          <button type="submit" class="button is-primary is-outlined is-small ml-2">
+            <span class="icon iconify" data-icon="mdi-check"></span>
+          </button>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="panel">
+  <p class="panel-heading">
+    Etiquetas
+  </p>
+
+  <div class="panel-block">
+    <form action="{% url 'main:gestionar_etiqueta' %}" method="post" id="etiquetas">
+      {% csrf_token %}
+      <ul>
+        <li><input class="input is-small" type="text" id="e_id" name="e_id" list="etiquetas_list" size=20 placeholder="Etiqueta"></li>
+        <li><input class="input is-small" type="text" id="e_nombre" name="e_nombre" size=20 placeholder="Texto largo etiqueta"></li>
+        <li class="has-text-centered">
+          <button type="submit" class="button is-small is-success is-outlined m-2" name="accion_etiqueta" value="anadir" title="Crear etiqueta">
+             <span class="icon iconify" data-icon="mdi-check"></span>
+          </button>
+          <button type="submit" class="button is-small is-danger is-outlined m-2" name="accion_etiqueta" value="borrar" title="Borrar etiqueta">
+            <span class="icon iconify" data-icon="mdi-close-circle"></span>
+          </button>
+        </li>
+      </ul>
+    </form>
+  </div>
+
+</div>
+
+{% endblock aside %}
+
+{% block content %}
+
+<div class="box mt-3 is-warning has-background-warning-light opr-sticky">
+
+  <form action="{% url 'main:cuentas' %}" method="post" id="crear_cuenta">
+    {% csrf_token %}
+
+    <table class="table has-background-warning-light" >
+
+      <thead>
+        <tr>
+          <th> <label for="num" class="label"> Número </label></th>
+          <th> <label for="nombre" class="label"> Nombre </label></th>
+          <th> <label for="etiqueta" class="label"> Etiqueta </label></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td> <input class="input is-small is-rounded" type="text" id="num" name="num" required size=20></td>
+          <td> <input class="input is-small is-rounded" type="text" id="nombre" name="nombre" required maxlength="200" size=200></td>
+          <td> <input class="input is-small is-rounded" type="text" id="etiqueta" name="etiqueta" list="etiquetas_list" maxlength="100" size=100></td>
+          <td> <button type="submit" class="button is-small is-success is-outlined" title="Añadir cuenta nueva">
+                 <span class="icon iconify" data-icon="mdi-check"></span>
+                 <span>Añadir</span>
+               </button></td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </form>
+</div>
+
+<datalist id="etiquetas_list">
+  {% for etiqueta in lista_etiquetas %}
+    <option value="{{ etiqueta }}">
+  {% endfor %}
+</datalist>
+
+{% if lista_cuentas %}
+
+  <table class="table is-striped is-narrow is-hoverable">
+
+    <thead>
+      <tr>
+        <th>
+          <input type="checkbox" id="master-check">
+          <button type="submit" form="borrar" class="button is-danger is-inverted is-small" title="Borrar las cuentas seleccionadas" name="borrar_multiple">
+            <span class="icon iconify" data-icon="mdi-trash-can"></span>
+          </button>
+        </th>
+        <th>
+          <a id="num_titulo" href="{% url 'main:cambiar_orden' 'cuentas' 'num' %}"> Núm </a>
+          {% if filtro.campo == 'num' %}
+            {% if filtro.ascendiente %}
+              <span class="icon iconify is-small has-text-grey-light" data-icon="mdi-arrow-up-thin"></span>
+            {% else %}
+              <span class="icon iconify is-small has-text-grey-light" data-icon="mdi-arrow-down-thin"></span>
+            {% endif %}
+          {% endif %}
+        </th>
+        <th>
+          <a id="nombre_titulo" href="{% url 'main:cambiar_orden' 'cuentas' 'nombre' %}"> Cuenta </a>
+          {% if filtro.campo == 'nombre' %}
+            {% if filtro.ascendiente %}
+              <span class="icon iconify is-small has-text-grey-light" data-icon="mdi-arrow-up-thin"></span>
+            {% else %}
+              <span class="icon iconify is-small has-text-grey-light" data-icon="mdi-arrow-down-thin"></span>
+            {% endif %}
+          {% endif %}
+        </th>
+        <th>
+          <a id="etiqueta_titulo" href="{% url 'main:cambiar_orden' 'cuentas' 'etiqueta' %}"> Etiqueta </a>
+          {% if filtro.campo == 'etiqueta' %}
+            {% if filtro.ascendiente %}
+              <span class="icon iconify is-small has-text-grey-light" data-icon="mdi-arrow-up-thin"></span>
+            {% else %}
+              <span class="icon iconify is-small has-text-grey-light" data-icon="mdi-arrow-down-thin"></span>
+            {% endif %}
+          {% endif %}
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <form action="{% url 'main:borrar_cuenta_multiple' %}" method="post" id="borrar">
+      {% csrf_token %}
+      {% for cuenta in lista_cuentas %}
+        <tr>
+          <td><input type="checkbox" id="check_{{ forloop.counter }}" name="check_{{ forloop.counter }}" value="{{ cuenta.num }}" class="check"></td>
+          <td class="has-text-left"> {{ cuenta.num }} </td>
+          <td class="has-text-left"> {{ cuenta.nombre }} </td>
+          <td class="has-text-left"> {{ cuenta.etiqueta.all|join:", " }} </td>
+          <td>
+            <a href="{% url 'main:modificar_cuenta' cuenta.num %}">
+              <span class="icon iconify has-text-link is-small" data-icon="mdi-edit"></span>
+            </a>
+            <a href="{% url 'main:borrar_cuenta' cuenta.num %}">
+              <span class="icon iconify has-text-danger is-small" data-icon="mdi-trash-can"></span>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      </form>
+    </tbody>
+
+  </table>
+
+  {% if paginacion %}
+
+  <div class="is-flex is-justify-content-space-between is-flex-wrap-wrap">
+    <nav class="pagination is-small" role="navigation" aria-label="pagination">
+      <ul class="pagination-list">
+        <li>
+          <a class="pagination-previous" href="{% url 'main:cuentas_pagina' pagina_actual|add:'-1' %}">
+            <span class="icon iconify is-small has-text-grey-light" data-icon="mdi-chevron-left"></span>
+            <span> Anterior </span>
+          </a>
+        </li>
+        {% for pag in paginacion %}
+          <li>
+            {% if pag %}
+              <a href="{% url 'main:cuentas_pagina' pag %}" class="pagination-link{% if pag == pagina_actual %} is-current{% endif %}" aria-label="Goto page {{ pag }}">{{ pag }}</a>
+            {% else %}
+              <span class="pagination-ellipsis">&hellip;</span>
+            {% endif %}
+          </li>
+        {% endfor %}
+        <li>
+          <a class="pagination-next" href="{% url 'main:cuentas_pagina' pagina_actual|add:'1' %}">
+            <span> Siguiente </span>
+            <span class="icon iconify is-small has-text-grey-light" data-icon="mdi-chevron-right"></span>
+          </a>
+        </li>
+        <li class="m-2">
+          Página {{ pagina_actual}}, del {{ num_cuentas.from|add:'1' }} al {{ num_cuentas.to }} de {{ num_cuentas.total }} cuentas.
+        </li>
+      </ul>
+    </nav>
+    <div class="m-2">
+      Mostrar:
+      <a>10</a>
+      <a>25</a>
+      <a>100</a>
+      <a>200</a>
+    </div>
+
+  </div>
+  {% endif %}
+
+
+{% else %}
+    <p>No hay ninguna cuenta todavía.</p>
+{% endif %}
+
+<script type="text/javascript" src="{% static 'main/js/multi-check.js' %}"></script>
+
+{% endblock %}

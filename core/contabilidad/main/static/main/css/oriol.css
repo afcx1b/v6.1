@@ -1,0 +1,10 @@
+.opr-sticky {
+  position: sticky;
+  top: 0;
+}
+
+.opr-center {
+  display: flex;
+	justify-content: center;
+	align-items: center;
+}

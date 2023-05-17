@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang=es>
+<head>
+
+  {% block title %}
+    <title>Contabilidad personal</title>
+  {% endblock %}
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'main/css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/base_generic.css' %}">
+  <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
+  {% block head %}{% endblock %}
+
+</head>
+
+<body>
+	<div class="container">
+
+		<!-- hero: https://bulma.io/documentation/layout/hero/ -->
+		<section class="hero is-link is-small has-background-image">
+      <div class="hero-head">
+        <div class="overlay-background">
+
+          <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+              <a class="navbar-item is-static" href="{% url 'dashboard' %}">
+                <img src="{% static 'main/img/circulo.png' %}" width="50" height="28">
+              </a>
+              <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a>
+            </div>
+            <div class="navbar-menu" id="navMenu">
+              <div class="navbar-start">
+                <a class="navbar-item" href="{% url 'main:cuentas' %}">Cuentas</a>
+                <a class="navbar-item" href="{% url 'main:asientos' %}">Asientos</a>
+                <a class="navbar-item" href="{% url 'main:informes' %}">Informes</a>
+              </div>
+              <div class="navbar-end">
+                {% if user.is_authenticated %}
+                  <div class="navbar-item">
+                    Usuario: <b>{{ user.get_username }}</b>
+                  </div>
+                  <a class="navbar-item" href="{% url 'logout'%}?next={{ request.path }}"> Logout </a>
+                {% else %}
+                  <a class="navbar-item" href="{% url 'login'%}?next={{ request.path }}"> Login </a>
+                {% endif %}
+              </div>
+            </div>
+          </nav>
+
+        </div>
+      </div>
+			<div class="hero-body">
+        <h1 class="title has-text-centered">Contabilidad personal</h1>
+        <h2 class="subtitle has-text-centered">{{ tab|capfirst }}</h2>
+			</div>
+		</section>
+
+		<div class="columns">
+			<div class="column is-narrow m-3">
+        <div class="opr-sticky">
+          {% block aside %}{% endblock aside %}
+        </div>
+
+			</div>
+
+			<div class="column">
+				<main class="content">
+          {% block content %}{% endblock content %}
+        </main>
+
+				<footer class="footer">
+          {% block footer %}
+          <hr>
+				  <div class="content">
+            <div class="columns">
+
+              <div class="column">
+                <p>&copy; 2023 AFCx1B</p>
+              </div>
+
+
+
+            </div>
+				  </div>
+          {% endblock footer %}
+				</footer>
+
+			</div>
+
+		</div>
+	</div>
+</body>
+
+<div class="modal{% if aviso %} is-active{% endif %}">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="message is-danger">
+      <div class="message-header">
+        <p>Aviso</p>
+        <a href="{{ aviso.nuevo_url }}"><button class="delete" aria-label="delete"></button></a>
+      </div>
+      <div class="message-body">
+        {{ aviso.mensaje|linebreaks }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'main/js/burger-menu.js' %}"></script>
+
+</html>

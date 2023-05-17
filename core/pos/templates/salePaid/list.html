@@ -1,0 +1,23 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'salePaid/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th scope="col" >Nro</th>
+        <th scope="col" >Factura de Venta</th>
+        <th scope="col" >Voucher</th>
+        <th scope="col" >Tarjeta</th>
+        <th scope="col" >Fecha</th>
+        <th scope="col" >Tipo Pago</th>
+        <th scope="col" >Cuotas</th>
+        <th scope="col" >Valor</th>
+        <th scope="col" >Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
