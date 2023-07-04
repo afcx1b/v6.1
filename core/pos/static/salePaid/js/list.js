@@ -21,6 +21,9 @@ $(function () {
             {"data": "tipPago.name"},
             {"data": "cuotas"},
             {"data": "valor"},
+            // {"data": "regtel"},
+            // {"data": "regWA"},
+            // {"data": "regPaid"},
             {"data": "id"},
         ],
         columnDefs: [
