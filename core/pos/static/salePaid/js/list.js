@@ -16,7 +16,7 @@ $(function () {
             {"data": "id"},
             {"data": "sale"},
             {"data": "voucher"},
-            {"data": "tarjeta"},
+            // {"data": "tarjeta"},
             {"data": "date_joined"},
             {"data": "tipPago.name"},
             {"data": "cuotas"},

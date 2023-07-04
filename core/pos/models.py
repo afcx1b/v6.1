@@ -1,13 +1,13 @@
 from datetime import datetime
 
+# from config.settings import AUTH_USER_MODEL
 from django.db import models
 from django.db.models import Sum, F, FloatField
 from django.db.models.functions import Coalesce
 from django.forms import model_to_dict
 
 from config import settings
-from core.pos.choices import tipTar_choices, tipoPago_choices, bancoEmi_choices
-from config.settings import MEDIA_URL, STATIC_URL
+from core.pos.choices import tipoPago_choices
 
 
 class Category(models.Model):
@@ -74,29 +74,30 @@ class Client(models.Model):
     correo = models.CharField(max_length=150, unique=True, verbose_name='Correo electrónico')
     address = models.CharField(max_length=150, null=False, blank=False, verbose_name='Dirección')
     ciudad = models.ForeignKey(CiudadProvincia, on_delete=models.CASCADE, verbose_name='Ciudad - Provincia')
-    dniA = models.ImageField(upload_to='dniA%Y%m%d', null=True, blank=True, verbose_name='DNI Anverso')
-    dniR = models.ImageField(upload_to='dniR%Y%m%d', null=True, blank=True, verbose_name='DNI Reverso')
+
+    # dniA = models.ImageField(upload_to='dniA%Y%m%d', null=True, blank=True, verbose_name='DNI Anverso')
+    # dniR = models.ImageField(upload_to='dniR%Y%m%d', null=True, blank=True, verbose_name='DNI Reverso')
 
     def __str__(self):
         return self.names
 
-    def get_dniA(self):
-        if self.dniA:
-            return '{}{}'.format(MEDIA_URL, self.dniA)
-        return '{}{}'.format(STATIC_URL, 'img/empty.png')
+    # def get_dniA(self):
+    #     if self.dniA:
+    #         return '{}{}'.format(MEDIA_URL, self.dniA)
+    #     return '{}{}'.format(STATIC_URL, 'img/empty.png')
 
-    def get_dniR(self):
-        if self.dniR:
-            return '{}{}'.format(MEDIA_URL, self.dniR)
-        return '{}{}'.format(STATIC_URL, 'img/empty.png')
+    # def get_dniR(self):
+    #     if self.dniR:
+    #         return '{}{}'.format(MEDIA_URL, self.dniR)
+    #     return '{}{}'.format(STATIC_URL, 'img/empty.png')
 
     def get_full_name(self):
         return f'{self.names} ({self.dni})'
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['dniA'] = self.get_dniA()
-        item['dniR'] = self.get_dniR()
+        # item['dniA'] = self.get_dniA()
+        # item['dniR'] = self.get_dniR()
         item['full_name'] = self.get_full_name()
         return item
 
@@ -171,15 +172,17 @@ class Sale(models.Model):
     iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     total_iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    # usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.client.names
 
     def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
+             update_fields=None, *args, **kwargs):
         if Company.objects.all().exists():
             self.company = Company.objects.first()
-        super(Sale, self).save()
+            # self.usuario = self.request.user
+        super(Sale, self).save(*args, **kwargs)
 
     def get_number(self):
         return f'{self.id:06d}'
@@ -310,45 +313,47 @@ class PurchaseProduct(models.Model):
         ordering = ['id']
 
 
-class Tarjeta(models.Model):
-    numero_tarjeta = models.CharField(max_length=16, unique=True, blank=False, null=False,
-                                      verbose_name='Número de Tarjeta')
-    tipTar = models.CharField(max_length=10, choices=tipTar_choices, default='Visa', verbose_name='Tipo Tarjeta')
-    bcoEmi = models.CharField(max_length=20, choices=bancoEmi_choices, default='Pichincha', verbose_name='Emisor')
-    mes_vencimiento = models.CharField(max_length=2, verbose_name='Mes de Vencimiento')
-    ano_vencimiento = models.CharField(max_length=4, verbose_name='Año de Vencimiento')
-    cod_seguridad = models.CharField(max_length=4, verbose_name='Código de Seguridad')
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Cliente')
-
-    def __str__(self):
-        return self.get_full_name()
-
-    def get_full_name(self):
-        return '{} / {} {}'.format(self.client.names, self.numero_tarjeta, self.tipTar)
-
-    def toJSON(self):
-        item = model_to_dict(self)
-        item['full_name'] = self.get_full_name()
-        item['tipTar'] = {'id': self.tipTar, 'name': self.get_tipTar_display()}
-        item['bcoEmi'] = {'id': self.bcoEmi, 'name': self.get_bcoEmi_display()}
-        item['client'] = self.client.names
-        return item
-
-    class Meta:
-        verbose_name = 'Tarjeta'
-        verbose_name_plural = 'Tarjetas'
-        ordering = ['id']
+# class Tarjeta(models.Model):
+#     numero_tarjeta = models.CharField(max_length=16, unique=True, blank=False, null=False,
+#                                       verbose_name='Número de Tarjeta')
+#     tipTar = models.CharField(max_length=10, choices=tipTar_choices, default='Visa', verbose_name='Tipo Tarjeta')
+#     bcoEmi = models.CharField(max_length=20, choices=bancoEmi_choices, default='Pichincha', verbose_name='Emisor')
+#     mes_vencimiento = models.CharField(max_length=2, verbose_name='Mes de Vencimiento')
+#     ano_vencimiento = models.CharField(max_length=4, verbose_name='Año de Vencimiento')
+#     cod_seguridad = models.CharField(max_length=4, verbose_name='Código de Seguridad')
+#     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Cliente')
+#
+#     def __str__(self):
+#         return self.get_full_name()
+#
+#     def get_full_name(self):
+#         return '{} / {} {}'.format(self.client.names, self.numero_tarjeta, self.tipTar)
+#
+#     def toJSON(self):
+#         item = model_to_dict(self)
+#         item['full_name'] = self.get_full_name()
+#         item['tipTar'] = {'id': self.tipTar, 'name': self.get_tipTar_display()}
+#         item['bcoEmi'] = {'id': self.bcoEmi, 'name': self.get_bcoEmi_display()}
+#         item['client'] = self.client.names
+#         return item
+#
+#     class Meta:
+#         verbose_name = 'Tarjeta'
+#         verbose_name_plural = 'Tarjetas'
+#         ordering = ['id']
 
 
 class SalePaid(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, verbose_name='Cliente')
     voucher = models.CharField(max_length=10, default='0', unique=True, blank=True, null=True, verbose_name='Voucher')
-    tarjeta = models.ForeignKey(Tarjeta, on_delete=models.CASCADE)
+    # tarjeta = models.ForeignKey(Tarjeta, on_delete=models.CASCADE)
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha del Voucher')
     tipPago = models.CharField(max_length=10, choices=tipoPago_choices, default='Corriente', verbose_name='Tipo Pago')
     cuotas = models.CharField(max_length=2, null=False, blank=False, verbose_name='Coutas')
     valor = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Valor')
     regTel = models.FileField(upload_to='regTel%Y%m%d', null=True, blank=True, verbose_name='Registro Telefónico')
+    regWA = models.FileField(upload_to='regWA%Y%m%d', null=True, blank=True, verbose_name='Registro WhatsApp')
+    regPaid = models.FileField(upload_to='regPaid%Y%m%d', null=True, blank=True, verbose_name='Registro Pago')
 
     def __str__(self):
         return self.voucher
@@ -358,14 +363,26 @@ class SalePaid(models.Model):
             return f'{settings.MEDIA_URL}{self.regTel}'
         return f'{settings.STATIC_URL}img/empty.png'
 
+    def get_regWA(self):
+        if self.regWA:
+            return f'{settings.MEDIA_URL}{self.regWA}'
+        return f'{settings.STATIC_URL}img/empty.png'
+
+    def get_regPaid(self):
+        if self.regPaid:
+            return f'{settings.MEDIA_URL}{self.regPaid}'
+        return f'{settings.STATIC_URL}img/empty.png'
+
     def toJSON(self):
         item = model_to_dict(self)
         item['sale'] = self.sale.get_number()
-        item['tarjeta'] = self.tarjeta.numero_tarjeta
+        # item['tarjeta'] = self.tarjeta.numero_tarjeta
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         item['tipPago'] = {'id': self.tipPago, 'name': self.get_tipPago_display()}
         item['valor'] = f'{self.valor:.2f}'
         item['regTel'] = self.get_regTel()
+        item['regWA'] = self.get_regWA()
+        item['regPaid'] = self.get_regPaid()
         return item
 
     class Meta:

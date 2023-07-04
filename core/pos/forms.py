@@ -233,50 +233,50 @@ class CompanyForm(ModelForm):
         return data
 
 
-class TarjetaForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['numero_tarjeta'].widget.attrs['autofocus'] = True
-
-    class Meta:
-        model = Tarjeta
-        fields = '__all__'
-        widgets = {
-            'numero_tarjeta': forms.TextInput(
-                attrs={
-                    'placeholder': 'Ingrese el número de la tarjeta',
-                }
-            ),
-            'mes_vencimiento': forms.TextInput(
-                attrs={
-                    'placeholder': 'Ingrese el mes de vencimiento Ej: 03',
-                }
-            ),
-            'ano_vencimiento': forms.TextInput(
-                attrs={
-                    'placeholder': 'Ingrese el año de vencimiento Ej: 2028',
-                }
-            ),
-            'cod_seguridad': forms.TextInput(
-                attrs={
-                    'placeholder': 'Ingrese el código de seguridad de 3 dígitos',
-                }
-            ),
-            'tipTar': forms.Select(),
-            'bcoEmi': forms.Select()
-        }
-
-    def save(self, commit=True):
-        data = {}
-        form = super()
-        try:
-            if form.is_valid():
-                form.save()
-            else:
-                data['error'] = form.errors
-        except Exception as e:
-            data['error'] = str(e)
-        return data
+# class TarjetaForm(ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['numero_tarjeta'].widget.attrs['autofocus'] = True
+#
+#     class Meta:
+#         model = Tarjeta
+#         fields = '__all__'
+#         widgets = {
+#             'numero_tarjeta': forms.TextInput(
+#                 attrs={
+#                     'placeholder': 'Ingrese el número de la tarjeta',
+#                 }
+#             ),
+#             'mes_vencimiento': forms.TextInput(
+#                 attrs={
+#                     'placeholder': 'Ingrese el mes de vencimiento Ej: 03',
+#                 }
+#             ),
+#             'ano_vencimiento': forms.TextInput(
+#                 attrs={
+#                     'placeholder': 'Ingrese el año de vencimiento Ej: 2028',
+#                 }
+#             ),
+#             'cod_seguridad': forms.TextInput(
+#                 attrs={
+#                     'placeholder': 'Ingrese el código de seguridad de 3 dígitos',
+#                 }
+#             ),
+#             'tipTar': forms.Select(),
+#             'bcoEmi': forms.Select()
+#         }
+#
+#     def save(self, commit=True):
+#         data = {}
+#         form = super()
+#         try:
+#             if form.is_valid():
+#                 form.save()
+#             else:
+#                 data['error'] = form.errors
+#         except Exception as e:
+#             data['error'] = str(e)
+#         return data
 
 
 class SalePaidForm(ModelForm):
@@ -298,7 +298,7 @@ class SalePaidForm(ModelForm):
                     'placeholder': 'Ingrese el número del voucher'
                 }
             ),
-            'tarjeta': forms.Select(),
+            # 'tarjeta': forms.Select(),
             'date_joined': forms.DateInput(format='%Y-%m-%d',
                                            attrs={
                                                'value': datetime.now().strftime('%Y-%m-%d'),

@@ -10,7 +10,7 @@ from core.pos.views.purchasePaid.views import *
 from core.pos.views.sale.views import *
 from core.pos.views.salePaid.views import *
 from core.pos.views.supplier.views import *
-from core.pos.views.tarjeta.views import *
+# from core.pos.views.tarjeta.views import *
 
 urlpatterns = [
     # dashboard
@@ -50,10 +50,10 @@ urlpatterns = [
     # company
     path('company/update/', CompanyUpdateView.as_view(), name='company_update'),
     # tarjeta
-    path('tarjeta/list/', TarjetaListView.as_view(), name='tarjeta_list'),
-    path('tarjeta/add/', TarjetaCreateView.as_view(), name='tarjeta_create'),
-    path('tarjeta/update/<int:pk>/', TarjetaUpdateView.as_view(), name='tarjeta_update'),
-    path('tarjeta/delete/<int:pk>/', TarjetaDeleteView.as_view(), name='tarjeta_delete'),
+    # path('tarjeta/list/', TarjetaListView.as_view(), name='tarjeta_list'),
+    # path('tarjeta/add/', TarjetaCreateView.as_view(), name='tarjeta_create'),
+    # path('tarjeta/update/<int:pk>/', TarjetaUpdateView.as_view(), name='tarjeta_update'),
+    # path('tarjeta/delete/<int:pk>/', TarjetaDeleteView.as_view(), name='tarjeta_delete'),
     # Pagos Ventas
     path('salePaid/list/', SalePaidListView.as_view(), name='salePaid_list'),
     path('salePaid/add/', SalePaidCreateView.as_view(), name='salePaid_create'),

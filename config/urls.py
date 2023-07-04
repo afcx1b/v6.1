@@ -31,7 +31,7 @@ urlpatterns = [
     path('security/', include('core.security.urls')),
     path('api/', include('core.api.urls')),
     path('api-token-auth/', views.obtain_auth_token),
-    path('conta/', include('core.contabilidad.main.urls')),
+    # path('conta/', include('core.contabilidad.main.urls')),
 ]
 
 # handler404 = page_not_found404

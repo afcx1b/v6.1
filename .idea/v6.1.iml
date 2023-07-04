@@ -25,7 +25,14 @@
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
       <list>
-        <option value="$MODULE_DIR$/core/contabilidad/main/templates" />
+        <option value="$MODULE_DIR$/templates" />
+        <option value="$MODULE_DIR$/core/contabilidad/templates" />
+        <option value="$MODULE_DIR$/core/homepage/templates" />
+        <option value="$MODULE_DIR$/core/login/templates" />
+        <option value="$MODULE_DIR$/core/pos/templates" />
+        <option value="$MODULE_DIR$/core/reports/templates" />
+        <option value="$MODULE_DIR$/core/security/templates" />
+        <option value="$MODULE_DIR$/core/user/templates" />
       </list>
     </option>
   </component>
